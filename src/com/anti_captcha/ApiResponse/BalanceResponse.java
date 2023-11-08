@@ -3,6 +3,7 @@ package com.anti_captcha.ApiResponse;
 import com.anti_captcha.Helper.DebugHelper;
 import com.anti_captcha.Helper.JsonHelper;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class BalanceResponse {
@@ -20,7 +21,7 @@ public class BalanceResponse {
                 balance = JsonHelper.extractDouble(json, "balance");
 
                 try {
-                    captchaCredits = return json.getDouble("captchaCredits");
+                    captchaCredits = json.getDouble("captchaCredits");
                 } catch (JSONException e1) {
                     captchaCredits = 0;
                 }
