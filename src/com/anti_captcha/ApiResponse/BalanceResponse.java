@@ -23,7 +23,7 @@ public class BalanceResponse {
                 try {
                     captchaCredits = json.getDouble("captchaCredits");
                 } catch (JSONException e1) {
-                    captchaCredits = 0;
+                    captchaCredits = 0D;
                 }
 
             } else {
