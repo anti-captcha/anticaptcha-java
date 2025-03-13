@@ -13,6 +13,8 @@ public class TurnstileProxyless extends AnticaptchaBase implements IAnticaptchaT
     private URL websiteUrl;
     private String websiteKey;
     private String action;
+    private String cData;
+    private String chlPageData;
 
     public void setWebsiteUrl(URL websiteUrl) {
         this.websiteUrl = websiteUrl;
@@ -26,6 +28,14 @@ public class TurnstileProxyless extends AnticaptchaBase implements IAnticaptchaT
         this.action = action;
     }
 
+    public void setCData(String cData) {
+        this.cData = cData;
+    }
+
+    public void setChlPageData(String chlPageData) {
+        this.chlPageData = chlPageData;
+    }
+
     @Override
     public JSONObject getPostData() {
         JSONObject postData = new JSONObject();
@@ -35,6 +45,8 @@ public class TurnstileProxyless extends AnticaptchaBase implements IAnticaptchaT
             postData.put("websiteURL", websiteUrl.toString());
             postData.put("websiteKey", websiteKey);
             postData.put("action", action);
+            postData.put("cData", cData);
+            postData.put("chlPageData", chlPageData);
         } catch (JSONException e) {
             DebugHelper.out("JSON compilation error: " + e.getMessage(), DebugHelper.Type.ERROR);
 
