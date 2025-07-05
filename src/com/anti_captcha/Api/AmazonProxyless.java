@@ -12,10 +12,12 @@ import java.net.URL;
 public class AmazonProxyless extends AnticaptchaBase implements IAnticaptchaTaskProtocol {
     private URL websiteUrl;
     private String websiteKey;
+    private String wafType;
     private String iv;
     private String context;
     private String captchaScript;
     private String challengeScript;
+    private String jsapiScript;
 
     public void setWebsiteUrl(URL websiteUrl) {
         this.websiteUrl = websiteUrl;
@@ -23,6 +25,10 @@ public class AmazonProxyless extends AnticaptchaBase implements IAnticaptchaTask
 
     public void setWebsiteKey(String websiteKey) {
         this.websiteKey = websiteKey;
+    }
+
+    public void setWafType(String wafType) {
+        this.wafType = wafType;
     }
 
     public void setIv(String iv) {
@@ -41,6 +47,10 @@ public class AmazonProxyless extends AnticaptchaBase implements IAnticaptchaTask
         this.challengeScript = challengeScript;
     }
 
+    public void setJsapiScript(String jsapiScript) {
+        this.jsapiScript = jsapiScript;
+    }
+
     @Override
     public JSONObject getPostData() {
         JSONObject postData = new JSONObject();
@@ -49,8 +59,10 @@ public class AmazonProxyless extends AnticaptchaBase implements IAnticaptchaTask
             postData.put("type", "AmazonTaskProxyless");
             postData.put("websiteURL", websiteUrl.toString());
             postData.put("websiteKey", websiteKey);
+            postData.put("wafType", wafType);
             postData.put("iv", iv);
             postData.put("context", context);
+            postData.put("jsapiScript", jsapiScript);
             if (captchaScript != null && !captchaScript.isEmpty()) {
                 postData.put("captchaScript", captchaScript);
             }
