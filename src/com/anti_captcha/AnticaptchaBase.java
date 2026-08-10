@@ -7,7 +7,6 @@ import com.anti_captcha.Helper.DebugHelper;
 import com.anti_captcha.Helper.HttpHelper;
 import com.anti_captcha.Helper.JsonHelper;
 import com.anti_captcha.Helper.StringHelper;
-import com.anti_captcha.Http.HttpRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,6 +16,9 @@ import java.util.concurrent.TimeUnit;
 public abstract class AnticaptchaBase {
     protected TaskResultResponse taskInfo;
     private final String host = "api.anti-captcha.com";
+
+    /** Timeout of a single HTTP call to the API, in milliseconds. */
+    private int connectionTimeout = 30_000;
     private final SchemeType scheme = SchemeType.HTTPS;
     private String errorMessage;
     private Integer taskId;
@@ -29,6 +31,14 @@ public abstract class AnticaptchaBase {
      */
     private Integer softId;
 
+    /**
+     * Timeout of a single HTTP call to the API, in milliseconds. Does not limit
+     * how long waitForResult() polls.
+     */
+    public void setConnectionTimeout(int milliseconds) {
+        this.connectionTimeout = milliseconds;
+    }
+
     public enum ProxyTypeOption {
         HTTP,
         SOCKS4,
@@ -38,16 +48,17 @@ public abstract class AnticaptchaBase {
     private JSONObject jsonPostRequest(ApiMethod methodName, JSONObject jsonPostData) {
 
         String url = scheme + "://" + host + "/" + StringHelper.toCamelCase(methodName.toString());
-        HttpRequest request = new HttpRequest(url);
-        request.setRawPost(JsonHelper.asString(jsonPostData));
-        request.addHeader("Content-Type", "application/json; charset=utf-8");
-        request.addHeader("Accept", "application/json");
-        request.setTimeout(30_000);
-
         String rawJson;
 
         try {
-            rawJson = HttpHelper.download(request).getBody();
+            rawJson = HttpHelper.post(url, JsonHelper.asString(jsonPostData), connectionTimeout);
+        } catch (InterruptedException e) {
+            // never swallow an interrupt
+            Thread.currentThread().interrupt();
+            errorMessage = "interrupted while waiting for the API";
+            DebugHelper.out(errorMessage, DebugHelper.Type.ERROR);
+
+            return null;
         } catch (Exception e) {
             errorMessage = e.getMessage();
             DebugHelper.out("HTTP problem: " + e.getMessage(), DebugHelper.Type.ERROR);
@@ -315,6 +326,80 @@ public abstract class AnticaptchaBase {
         return errorMessage == null ? "no error message" : errorMessage;
     }
 
+    /**
+     * Id of the task created by createTask().
+     */
+    public Integer getTaskId() {
+        return taskId;
+    }
+
+    /**
+     * Reports the solved image captcha as answered incorrectly.
+     *
+     * @return true when the API accepted the report
+     */
+    public boolean reportIncorrectImageCaptcha() {
+        return report(ApiMethod.REPORT_INCORRECT_IMAGE_CAPTCHA);
+    }
+
+    /**
+     * Reports the solved Recaptcha as answered incorrectly.
+     */
+    public boolean reportIncorrectRecaptcha() {
+        return report(ApiMethod.REPORT_INCORRECT_RECAPTCHA);
+    }
+
+    /**
+     * Reports the solved Recaptcha as answered correctly. Helps us pick better workers.
+     */
+    public boolean reportCorrectRecaptcha() {
+        return report(ApiMethod.REPORT_CORRECT_RECAPTCHA);
+    }
+
+    /**
+     * Reports the solved hCaptcha as answered incorrectly.
+     */
+    public boolean reportIncorrectHcaptcha() {
+        return report(ApiMethod.REPORT_INCORRECT_HCAPTCHA);
+    }
+
+    private boolean report(ApiMethod method) {
+        if (taskId == null) {
+            DebugHelper.out("There is no solved task to report", DebugHelper.Type.ERROR);
+
+            return false;
+        }
+
+        JSONObject jsonPostData = new JSONObject();
+
+        try {
+            jsonPostData.put("clientKey", clientKey);
+            jsonPostData.put("taskId", taskId);
+        } catch (JSONException e) {
+            errorMessage = e.getMessage();
+            DebugHelper.out("JSON compilation error: " + e.getMessage(), DebugHelper.Type.ERROR);
+
+            return false;
+        }
+
+        JSONObject postResult = jsonPostRequest(method, jsonPostData);
+
+        if (postResult == null) {
+            return false;
+        }
+
+        Integer reportErrorId = JsonHelper.extractInt(postResult, "errorId");
+
+        if (reportErrorId == null || !reportErrorId.equals(0)) {
+            errorMessage = JsonHelper.extractStr(postResult, "errorDescription", true);
+            DebugHelper.out("API error: " + errorMessage, DebugHelper.Type.ERROR);
+
+            return false;
+        }
+
+        return true;
+    }
+
     private enum SchemeType {
         HTTP,
         HTTPS
@@ -323,6 +408,10 @@ public abstract class AnticaptchaBase {
     private enum ApiMethod {
         CREATE_TASK,
         GET_TASK_RESULT,
-        GET_BALANCE
+        GET_BALANCE,
+        REPORT_INCORRECT_IMAGE_CAPTCHA,
+        REPORT_INCORRECT_RECAPTCHA,
+        REPORT_CORRECT_RECAPTCHA,
+        REPORT_INCORRECT_HCAPTCHA
     }
 }

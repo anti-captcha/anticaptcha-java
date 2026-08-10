@@ -4,17 +4,25 @@ import com.anti_captcha.AnticaptchaBase;
 import com.anti_captcha.ApiResponse.TaskResultResponse;
 import com.anti_captcha.Helper.DebugHelper;
 import com.anti_captcha.IAnticaptchaTaskProtocol;
-import org.json.JSONArray;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URL;
 
-public class AntiGateTask extends AnticaptchaBase implements IAnticaptchaTaskProtocol {
+/**
+ * Makes a worker open the target page through your proxy and returns the anti-bot
+ * cookies, localStorage and browser fingerprint collected there, so you can reuse
+ * them in your own requests.
+ *
+ * <p>The proxy is required: the cookies are only valid for the IP address they were
+ * issued to, so it has to be the same proxy you use later. This task type takes no
+ * proxyType, only http proxies are supported.
+ *
+ * @see <a href="https://anti-captcha.com/apidoc/task-types/AntiBotCookieTask">AntiBotCookieTask</a>
+ */
+public class AntiBotCookie extends AnticaptchaBase implements IAnticaptchaTaskProtocol {
     private String websiteUrl;
-    private String templateName;
-    private JSONObject variables;
-    private JSONArray domainsOfInterest;
     private String proxyAddress;
     private Integer proxyPort;
     private String proxyLogin;
@@ -30,18 +38,6 @@ public class AntiGateTask extends AnticaptchaBase implements IAnticaptchaTaskPro
      */
     public void setWebsiteUrl(String websiteUrl) {
         this.websiteUrl = websiteUrl;
-    }
-
-    public void setTemplateName(String templateName) {
-        this.templateName = templateName;
-    }
-
-    public void setVariables(JSONObject variables) {
-        this.variables = variables;
-    }
-
-    public void setDomainsOfInterest(JSONArray domainsOfInterest) {
-        this.domainsOfInterest = domainsOfInterest;
     }
 
     public void setProxyAddress(String proxyAddress) {
@@ -62,28 +58,25 @@ public class AntiGateTask extends AnticaptchaBase implements IAnticaptchaTaskPro
 
     @Override
     public JSONObject getPostData() {
+        if (proxyAddress == null || proxyAddress.isEmpty()
+                || proxyPort == null || proxyPort < 1 || proxyPort > 65535) {
+            DebugHelper.out("Proxy data is incorrect!", DebugHelper.Type.ERROR);
+
+            return null;
+        }
+
         JSONObject postData = new JSONObject();
 
         try {
-            postData.put("type", "AntiGateTask");
+            postData.put("type", "AntiBotCookieTask");
             postData.put("websiteURL", websiteUrl);
-            postData.put("templateName", templateName);
+            postData.put("proxyAddress", proxyAddress);
+            postData.put("proxyPort", proxyPort);
 
-            if (proxyAddress != null && proxyPort != null) {
-                postData.put("proxyAddress", proxyAddress);
-                postData.put("proxyPort", proxyPort);
-            }
-            if (proxyLogin != null && proxyPassword != null) {
+            if (proxyLogin != null && !proxyLogin.isEmpty()) {
                 postData.put("proxyLogin", proxyLogin);
                 postData.put("proxyPassword", proxyPassword);
             }
-            if (variables != null) {
-                postData.put("variables", variables);
-            }
-            if (domainsOfInterest != null) {
-                postData.put("domainsOfInterest", domainsOfInterest);
-            }
-
         } catch (JSONException e) {
             DebugHelper.out("JSON compilation error: " + e.getMessage(), DebugHelper.Type.ERROR);
 

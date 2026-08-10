@@ -11,13 +11,13 @@ import org.json.JSONObject;
 import java.net.URL;
 
 public class GeeTestProxyless extends AnticaptchaBase implements IAnticaptchaTaskProtocol {
-    private URL websiteUrl;
+    private String websiteUrl;
     private String websiteKey;
     private String websiteChallenge;
     private String geetestApiServerSubdomain;
     private String geetestLib;
 
-    public URL getWebsiteUrl() {
+    public String getWebsiteUrl() {
         return websiteUrl;
     }
 
@@ -42,6 +42,14 @@ public class GeeTestProxyless extends AnticaptchaBase implements IAnticaptchaTas
     }
 
     public void setWebsiteUrl(URL websiteUrl) {
+        this.websiteUrl = websiteUrl.toString();
+    }
+
+    /**
+     * Convenience overload: takes the address as a plain string, so you do not
+     * have to build a URL and catch MalformedURLException yourself.
+     */
+    public void setWebsiteUrl(String websiteUrl) {
         this.websiteUrl = websiteUrl;
     }
 
@@ -59,7 +67,7 @@ public class GeeTestProxyless extends AnticaptchaBase implements IAnticaptchaTas
 
         try {
             postData.put("type", "GeeTestTaskProxyless");
-            postData.put("websiteURL", websiteUrl.toString());
+            postData.put("websiteURL", websiteUrl);
             postData.put("gt", websiteKey);
             postData.put("challenge", websiteChallenge);
 

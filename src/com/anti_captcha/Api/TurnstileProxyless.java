@@ -10,13 +10,21 @@ import org.json.JSONObject;
 import java.net.URL;
 
 public class TurnstileProxyless extends AnticaptchaBase implements IAnticaptchaTaskProtocol {
-    private URL websiteUrl;
+    private String websiteUrl;
     private String websiteKey;
     private String action;
     private String cData;
     private String chlPageData;
 
     public void setWebsiteUrl(URL websiteUrl) {
+        this.websiteUrl = websiteUrl.toString();
+    }
+
+    /**
+     * Convenience overload: takes the address as a plain string, so you do not
+     * have to build a URL and catch MalformedURLException yourself.
+     */
+    public void setWebsiteUrl(String websiteUrl) {
         this.websiteUrl = websiteUrl;
     }
 
@@ -24,7 +32,7 @@ public class TurnstileProxyless extends AnticaptchaBase implements IAnticaptchaT
         this.websiteKey = websiteKey;
     }
 
-    public void setAction(String websiteKey) {
+    public void setAction(String action) {
         this.action = action;
     }
 
@@ -42,7 +50,7 @@ public class TurnstileProxyless extends AnticaptchaBase implements IAnticaptchaT
 
         try {
             postData.put("type", "TurnstileTaskProxyless");
-            postData.put("websiteURL", websiteUrl.toString());
+            postData.put("websiteURL", websiteUrl);
             postData.put("websiteKey", websiteKey);
             postData.put("action", action);
             postData.put("cData", cData);

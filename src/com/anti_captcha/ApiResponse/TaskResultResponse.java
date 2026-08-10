@@ -64,6 +64,10 @@ public class TaskResultResponse {
                     solution.pass_token = JsonHelper.extractStr(json,"solution",  "pass_token", true);
                     solution.gen_time = JsonHelper.extractInt(json,"solution",  "gen_time", true);
                     solution.captcha_output = JsonHelper.extractStr(json,"solution",  "captcha_output", true);
+                    solution.respKey = JsonHelper.extractStr(json, "solution", "respKey", true);
+                    solution.userAgent = JsonHelper.extractStr(json, "solution", "userAgent", true);
+                    solution.coordinates = JsonHelper.extractJSONArray(json, "solution", "coordinates");
+                    solution.lastRequestHeaders = JsonHelper.extractJSONArray(json, "solution", "lastRequestHeaders");
 
 
                     if (solution.gRecaptchaResponse == null &&
@@ -73,6 +77,8 @@ public class TaskResultResponse {
                         solution.seccode == null &&
                         solution.validate == null &&
                         solution.cookies == null &&
+                        solution.coordinates == null &&
+                        solution.captcha_id == null &&
                         solution.captcha_output == null) {
                         DebugHelper.out("2 Got no 'solution' field from API", DebugHelper.Type.ERROR);
                         DebugHelper.out(json.toString(), DebugHelper.Type.ERROR);
@@ -175,6 +181,10 @@ public class TaskResultResponse {
         private JSONObject localStorage;
         private JSONObject fingerprint;
         private String domain;
+        private String respKey; // Will be available for hCaptcha tasks only
+        private String userAgent; // User-agent of the worker who solved the captcha
+        private JSONArray coordinates; // Will be available for ImageToCoordinates tasks only
+        private JSONArray lastRequestHeaders; // Will be available for AntiBotCookie tasks only
 
         public String getGRecaptchaResponseMd5() {
             return gRecaptchaResponseMd5;
@@ -222,6 +232,59 @@ public class TaskResultResponse {
 
         public String getDomain() {
             return domain;
+        }
+
+        /**
+         * hCaptcha only.
+         */
+        public String getRespKey() {
+            return respKey;
+        }
+
+        /**
+         * User-agent of the worker who solved the captcha. Submit the form with it.
+         */
+        public String getUserAgent() {
+            return userAgent;
+        }
+
+        /**
+         * ImageToCoordinates only: a list of [x, y] points or [x1, y1, x2, y2] boxes.
+         */
+        public JSONArray getCoordinates() {
+            return coordinates;
+        }
+
+        /**
+         * AntiBotCookie only: the headers the worker's browser sent last.
+         */
+        public JSONArray getLastRequestHeaders() {
+            return lastRequestHeaders;
+        }
+
+        /**
+         * The cookies formatted as a "name1=value1; name2=value2" header value.
+         */
+        public String getCookieHeader() {
+            if (cookies == null) {
+                return "";
+            }
+
+            StringBuilder header = new StringBuilder();
+            // keys() rather than keySet(), so this also builds against older org.json
+            java.util.Iterator<String> names = cookies.keys();
+
+            while (names.hasNext()) {
+                String name = names.next();
+
+                if (header.length() > 0) {
+                    header.append("; ");
+                }
+
+                header.append(name).append("=").append(cookies.opt(name));
+            }
+
+            return header.toString();
         }
 
         public String getCaptchaId() {

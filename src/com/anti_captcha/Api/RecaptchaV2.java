@@ -54,7 +54,7 @@ public class RecaptchaV2 extends RecaptchaV2Proxyless {
         }
 
         try {
-            postData.put("type", "NoCaptchaTask");
+            postData.put("type", "RecaptchaV2Task");
             postData.put("proxyType", proxyType.toString().toLowerCase());
             postData.put("proxyAddress", proxyAddress);
             postData.put("proxyPort", proxyPort);

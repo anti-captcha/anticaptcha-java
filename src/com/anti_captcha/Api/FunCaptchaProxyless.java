@@ -11,7 +11,7 @@ import java.net.URL;
 
 public class FunCaptchaProxyless extends AnticaptchaBase implements IAnticaptchaTaskProtocol {
 
-    private URL websiteUrl;
+    private String websiteUrl;
     private String websitePublicKey;
     private String apiSubdomain;
     private String dataBlob;
@@ -47,6 +47,14 @@ public class FunCaptchaProxyless extends AnticaptchaBase implements IAnticaptcha
     }
 
     public void setWebsiteUrl(URL websiteUrl) {
+        this.websiteUrl = websiteUrl.toString();
+    }
+
+    /**
+     * Convenience overload: takes the address as a plain string, so you do not
+     * have to build a URL and catch MalformedURLException yourself.
+     */
+    public void setWebsiteUrl(String websiteUrl) {
         this.websiteUrl = websiteUrl;
     }
 

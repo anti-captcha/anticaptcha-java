@@ -28,6 +28,8 @@ public class Main {
         exampleGeeTestV4Proxyless();
         exampleHCaptchaProxyless();
         exampleAntiGateTask();
+        exampleImageToCoordinates();
+        exampleAntiBotCookie();
     }
 
 
@@ -43,7 +45,7 @@ public class Main {
          *  https://anti-captcha.com/clients/tools/devcenter
          */
         api.setSoftId(0);
-        api.setWebsiteUrl(new URL("https://auth.geetest.com/"));
+        api.setWebsiteUrl("https://auth.geetest.com/");
         api.setWebsiteKey("b6e21f90a91a3c2d4a31fe84e10d0442");
         // you need to get a new "challenge" each time
         api.setWebsiteChallenge("cd0b3b5c33fb951ab364d9e13ccd7bf8");
@@ -86,7 +88,7 @@ public class Main {
          *  https://anti-captcha.com/clients/tools/devcenter
          */
         api.setSoftId(0);
-        api.setWebsiteUrl(new URL("https://website.com/"));
+        api.setWebsiteUrl("https://website.com/");
         api.setWebsiteKey("1234567890123456789012");
 
         // you need to get a new "challenge" each time
@@ -122,7 +124,7 @@ public class Main {
          *  https://anti-captcha.com/clients/tools/devcenter
          */
         api.setSoftId(0);
-        api.setWebsiteUrl(new URL("https://website.com/"));
+        api.setWebsiteUrl("https://website.com/");
         api.setWebsiteKey("1234567890123456789012");
 
         // optional initial parameters
@@ -167,7 +169,7 @@ public class Main {
          *  https://anti-captcha.com/clients/tools/devcenter
          */
         api.setSoftId(0);
-        api.setWebsiteUrl(new URL("https://auth.geetest.com/"));
+        api.setWebsiteUrl("https://auth.geetest.com/");
         api.setWebsiteKey("b6e21f90a91a3c2d4a31fe84e10d0442");
 
         // optional initial parameters
@@ -254,7 +256,7 @@ public class Main {
          *  https://anti-captcha.com/clients/tools/devcenter
          */
         api.setSoftId(0);
-        api.setWebsiteUrl(new URL("http://http.myjino.ru/recaptcha/test-get.php"));
+        api.setWebsiteUrl("http://http.myjino.ru/recaptcha/test-get.php");
         api.setWebsiteKey("6Lc_aCMTAAAAABx7u2W0WPXnVbI_v6ZdbM6rYf16");
 
         if (!api.createTask()) {
@@ -281,7 +283,7 @@ public class Main {
          *  https://anti-captcha.com/clients/tools/devcenter
          */
         api.setSoftId(0);
-        api.setWebsiteUrl(new URL("http://democaptcha.com/"));
+        api.setWebsiteUrl("http://democaptcha.com/");
         api.setWebsiteKey("51829642-2cda-4b09-896c-594f89d700cc");
         api.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 " +
                 "(KHTML, like Gecko) Chrome/52.0.2743.116");
@@ -325,7 +327,7 @@ public class Main {
          *  https://anti-captcha.com/clients/tools/devcenter
          */
         api.setSoftId(0);
-        api.setWebsiteUrl(new URL("http://www.supremenewyork.com"));
+        api.setWebsiteUrl("http://www.supremenewyork.com");
         api.setWebsiteKey("6Leva6oUAAAAAMFYqdLAI8kJ5tw7BtkHYpK10RcD");
         api.setPageAction("testPageAction");
 
@@ -353,7 +355,7 @@ public class Main {
          *  https://anti-captcha.com/clients/tools/devcenter
          */
         api.setSoftId(0);
-        api.setWebsiteUrl(new URL("http://http.myjino.ru/recaptcha/test-get.php"));
+        api.setWebsiteUrl("http://http.myjino.ru/recaptcha/test-get.php");
         api.setWebsiteKey("6Lc_aCMTAAAAABx7u2W0WPXnVbI_v6ZdbM6rYf16");
         api.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 " +
                 "(KHTML, like Gecko) Chrome/52.0.2743.116");
@@ -390,7 +392,7 @@ public class Main {
          *  https://anti-captcha.com/clients/tools/devcenter
          */
         api.setSoftId(0);
-        api.setWebsiteUrl(new URL("http://http.myjino.ru/recaptcha/test-get.php"));
+        api.setWebsiteUrl("http://http.myjino.ru/recaptcha/test-get.php");
         api.setWebsiteKey("6Lc_aCMTAAAAABx7u2W0WPXnVbI_v6ZdbM6rYf16");
         api.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 " +
                 "(KHTML, like Gecko) Chrome/52.0.2743.116");
@@ -435,7 +437,7 @@ public class Main {
          *  https://anti-captcha.com/clients/tools/devcenter
          */
         api.setSoftId(0);
-        api.setWebsiteUrl(new URL("http://http.myjino.ru/recaptcha/test-get.php"));
+        api.setWebsiteUrl("http://http.myjino.ru/recaptcha/test-get.php");
         api.setWebsiteKey("6Lc_aCMTAAAAABx7u2W0WPXnVbI_v6ZdbM6rYf16");
 
         JSONObject enterprisePayload = new JSONObject();
@@ -471,7 +473,7 @@ public class Main {
          *  https://anti-captcha.com/clients/tools/devcenter
          */
         api.setSoftId(0);
-        api.setWebsiteUrl(new URL("http://www.supremenewyork.com"));
+        api.setWebsiteUrl("http://www.supremenewyork.com");
         api.setWebsiteKey("6Leva6oUAAAAAMFYqdLAI8kJ5tw7BtkHYpK10RcD");
         api.setPageAction("testPageAction");
 
@@ -514,7 +516,7 @@ public class Main {
          *  https://anti-captcha.com/clients/tools/devcenter
          */
         api.setSoftId(0);
-        api.setWebsiteUrl(new URL("http://http.myjino.ru/funcaptcha_test/"));
+        api.setWebsiteUrl("http://http.myjino.ru/funcaptcha_test/");
         api.setWebsitePublicKey("DE0B0BB7-1EE4-4D70-1853-31B835D4506B");
         api.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116");
 
@@ -553,7 +555,7 @@ public class Main {
          *  https://anti-captcha.com/clients/tools/devcenter
          */
         api.setSoftId(0);
-        api.setWebsiteUrl(new URL("http://http.myjino.ru/funcaptcha_test/"));
+        api.setWebsiteUrl("http://http.myjino.ru/funcaptcha_test/");
         api.setWebsitePublicKey("DE0B0BB7-1EE4-4D70-1853-31B835D4506B");
 
         //optional parameters, be careful!
@@ -584,7 +586,7 @@ public class Main {
          *  https://anti-captcha.com/clients/tools/devcenter
          */
         api.setSoftId(0);
-        api.setWebsiteUrl(new URL("http://antigate.com/logintest.php"));
+        api.setWebsiteUrl("http://antigate.com/logintest.php");
         api.setTemplateName("Sign-in and wait for control text");
 
         JSONObject variables = new JSONObject();
@@ -629,6 +631,66 @@ public class Main {
             DebugHelper.out(api.getTaskSolution().getFingerprint().toString(), DebugHelper.Type.SUCCESS);
             DebugHelper.out("url: ", DebugHelper.Type.SUCCESS);
             DebugHelper.out(api.getTaskSolution().getUrl(), DebugHelper.Type.SUCCESS);
+        }
+    }
+
+    private static void exampleImageToCoordinates() throws InterruptedException {
+        DebugHelper.setVerboseMode(true);
+
+        ImageToCoordinates api = new ImageToCoordinates();
+        api.setClientKey("1234567890123456789012");
+
+        /*
+         *  Specify softId to earn 10% commission with your app.
+         *  Get your softId here:
+         *  https://anti-captcha.com/clients/tools/devcenter
+         */
+        api.setSoftId(0);
+        api.setFilePath("coordinates.jpg");
+        api.setMode("points"); // "points" or "rectangles"
+        api.setComment("Select objects in the specified order");
+
+        if (!api.createTask()) {
+            DebugHelper.out("API v2 send failed. " + api.getErrorMessage(), DebugHelper.Type.ERROR);
+        } else if (!api.waitForResult()) {
+            DebugHelper.out("Could not solve the captcha.", DebugHelper.Type.ERROR);
+        } else {
+            DebugHelper.out("Objects X,Y coordinates: " + api.getTaskSolution().getCoordinates(),
+                    DebugHelper.Type.SUCCESS);
+        }
+    }
+
+    private static void exampleAntiBotCookie() throws InterruptedException {
+        DebugHelper.setVerboseMode(true);
+
+        AntiBotCookie api = new AntiBotCookie();
+        api.setClientKey("1234567890123456789012");
+
+        /*
+         *  Specify softId to earn 10% commission with your app.
+         *  Get your softId here:
+         *  https://anti-captcha.com/clients/tools/devcenter
+         */
+        api.setSoftId(0);
+        api.setWebsiteUrl("https://www.somewebsite.com/");
+
+        // The cookies are bound to this IP address, so use the very same proxy
+        // for your own requests afterwards
+        api.setProxyAddress("1.2.3.4");
+        api.setProxyPort(3128);
+        api.setProxyLogin("login");
+        api.setProxyPassword("password");
+
+        if (!api.createTask()) {
+            DebugHelper.out("API v2 send failed. " + api.getErrorMessage(), DebugHelper.Type.ERROR);
+        } else if (!api.waitForResult()) {
+            DebugHelper.out("Could not get the cookies.", DebugHelper.Type.ERROR);
+        } else {
+            DebugHelper.out("Use these cookies for requests: "
+                    + api.getTaskSolution().getCookieHeader(), DebugHelper.Type.SUCCESS);
+            DebugHelper.out("Use this user-agent for requests: "
+                    + api.getTaskSolution().getFingerprint().optString("self.navigator.userAgent"),
+                    DebugHelper.Type.SUCCESS);
         }
     }
 
